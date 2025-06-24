@@ -1,25 +1,19 @@
 import React, { useState } from 'react'
 import { auth } from '../src/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../src/AuthContext/AuthContext';
 
 const SignUp = () => {
+    const { addUser } = useAuth();
     const [text, setText] = useState("");
     const [pass, setPass] = useState("")
-    const [message, setMessage] = useState()
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        createUserWithEmailAndPassword(auth,text,pass)
-        .then((UserCredential)=>{
-            setMessage("user created sccessfully")
-        })
-        .catch((error)=>{
-            console.error("error created", error)
-            setMessage("error occur")
-            
-        })
-        
+
+        await addUser(text, pass);
         console.log("Username:", text);
         console.log("Password:", pass);
+        setPass("")
+        setText("")
     }
     return (
         <div>
@@ -34,7 +28,6 @@ const SignUp = () => {
                     placeholder='enter PassWord' />
                 <button >Submit</button>
             </form>
-            {message&&<p>{message}</p>}
         </div>
     )
 }
