@@ -8,7 +8,7 @@ const signInUsingGithub = () => {
         await signInUsingGitHub();
         console.log("login using github done");
     }
-    
+
     return (
         <div>
             <button onClick={handleSubmit}>SignIn Using Github</button>

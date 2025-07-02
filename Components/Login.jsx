@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import { auth } from '../src/firebase'
 import { useAuth } from '../src/AuthContext/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
     const {signIn} = useAuth();
     const [user, setuser] = useState("")
     const [pass, setPass] = useState("")
+      const navigate = useNavigate(); // 👈 Hook for redirect
+
     const handleSubmit =async (e) => {
         e.preventDefault();
         await signIn(user,pass);
+                navigate("/dashboard"); // ✅ Redirect after login
+
         console.log("sign in complete"); 
     }
 

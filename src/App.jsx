@@ -10,6 +10,8 @@ import NavBar from '../Components/NavBar'
 import { UserProvider } from './AuthContext/AuthContext'
 import SignInButton from '../Components/SignInButton'
 import SignInUsingGitHub from '../Components/SignInUsingGitHub'
+import PrivateRoute from '../Components/PrivateRoute'
+import DashBaord from '../Components/DashBaord'
 
 function App() {
 
@@ -23,6 +25,9 @@ function App() {
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/signInGoogle' element={<SignInButton/>} />
           <Route path='/signInGithub' element={<SignInUsingGitHub/>}/>
+          <Route path='/DashBoard' element={<PrivateRoute>
+            <DashBaord/>
+          </PrivateRoute>}/>
         </Routes>
       </UserProvider>
     </>
