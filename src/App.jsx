@@ -8,6 +8,8 @@ import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import NavBar from '../Components/NavBar'
 import { UserProvider } from './AuthContext/AuthContext'
+import SignInButton from '../Components/SignInButton'
+import SignInUsingGitHub from '../Components/SignInUsingGitHub'
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
+          <Route path='/signInGoogle' element={<SignInButton/>} />
+          <Route path='/signInGithub' element={<SignInUsingGitHub/>}/>
         </Routes>
       </UserProvider>
     </>

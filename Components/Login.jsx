@@ -10,9 +10,7 @@ const Login = () => {
     const handleSubmit =async (e) => {
         e.preventDefault();
         await signIn(user,pass);
-        console.log("sign in complete");
-        
-        
+        console.log("sign in complete"); 
     }
 
     return (
