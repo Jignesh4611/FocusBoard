@@ -8,10 +8,10 @@ import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import NavBar from '../Components/NavBar'
 import { UserProvider } from './AuthContext/AuthContext'
-import SignInButton from '../Components/SignInButton'
 import SignInUsingGitHub from '../Components/SignInUsingGitHub'
 import PrivateRoute from '../Components/PrivateRoute'
 import DashBaord from '../Components/DashBaord'
+import SigninGoogle from '../Components/SigninGoogle'
 
 function App() {
 
@@ -23,7 +23,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signUp' element={<SignUp />} />
-          <Route path='/signInGoogle' element={<SignInButton/>} />
+          <Route path='/signInGoogle' element={<SigninGoogle/>} />
           <Route path='/signInGithub' element={<SignInUsingGitHub/>}/>
           <Route path='/DashBoard' element={<PrivateRoute>
             <DashBaord/>

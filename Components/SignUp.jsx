@@ -4,6 +4,7 @@ import { useAuth } from '../src/AuthContext/AuthContext';
 
 const SignUp = () => {
     const { addUser } = useAuth();
+    
     const [text, setText] = useState("");
     const [pass, setPass] = useState("")
     async function handleSubmit(e) {

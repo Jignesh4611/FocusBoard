@@ -6,14 +6,15 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const {signIn} = useAuth();
+
     const [user, setuser] = useState("")
     const [pass, setPass] = useState("")
-      const navigate = useNavigate(); // 👈 Hook for redirect
+      const navigate = useNavigate(); 
 
     const handleSubmit =async (e) => {
         e.preventDefault();
         await signIn(user,pass);
-                navigate("/dashboard"); // ✅ Redirect after login
+                navigate("/dashboard"); 
 
         console.log("sign in complete"); 
     }
