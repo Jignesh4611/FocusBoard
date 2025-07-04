@@ -12,23 +12,29 @@ import SignInUsingGitHub from '../Components/SignInUsingGitHub'
 import PrivateRoute from '../Components/PrivateRoute'
 import DashBaord from '../Components/DashBaord'
 import SigninGoogle from '../Components/SigninGoogle'
+import { useRoutes } from 'react-router-dom'
+import DashBoardRoute from '../routes/DashBoardRoute'
 
 function App() {
+  const routes = useRoutes([
+    { path: '/', element: <Home /> },
+    { path: '/login', element: <Login /> },
+    { path: '/signup', element: <SignUp /> },
+    { path: '/signInGoogle', element: <SigninGoogle /> },
+    { path: '/signInGithub', element: <SignInUsingGitHub /> },
+    {
+    path: DashBoardRoute.path,
+    element: <PrivateRoute>{DashBoardRoute.element}</PrivateRoute>, // ✅ fixed
+    children: DashBoardRoute.Children 
+  }
+  ])
+
 
   return (
     <>
       <UserProvider>
         <NavBar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signUp' element={<SignUp />} />
-          <Route path='/signInGoogle' element={<SigninGoogle/>} />
-          <Route path='/signInGithub' element={<SignInUsingGitHub/>}/>
-          <Route path='/DashBoard' element={<PrivateRoute>
-            <DashBaord/>
-          </PrivateRoute>}/>
-        </Routes>
+        {routes}
       </UserProvider>
     </>
   )

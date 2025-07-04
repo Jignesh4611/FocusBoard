@@ -13,11 +13,16 @@ const DashBaord = () => {
         await signOut(auth);
         navigate('/login');
     }
+        if (!user) {
+        return <p>Loading user info...</p>;
+    }
+
   return (
-    <div>
-      <p>welcome to the dashboard {user.email}</p>
-      <button onClick={handleLogOut}>Logout</button>
-    </div>
+     
+        <div>
+            <p>Welcome to the dashboard {user.email}</p>
+            <button onClick={handleLogOut}>Logout</button>
+        </div>
   )
 }
 
