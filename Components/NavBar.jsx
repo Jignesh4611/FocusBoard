@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const NavBar = () => {
     const { user, logout } = useAuth();
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const hadleLogout = async () => {
         try {
             await logout();
@@ -26,6 +26,9 @@ const NavBar = () => {
                 {user ? (
                     <>
                         <Link to="/dashboard">Dashboard</Link>
+
+                        <Link to="/tasks">Go to Tasks</Link>
+
                     </>
                 ) : (
                     <>
