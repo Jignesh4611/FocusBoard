@@ -23,10 +23,14 @@ const SignUp = () => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder='UserName' />
-                <input type='password'
-                    value={pass}
-                    onChange={(e) => setPass(e.target.value)}
-                    placeholder='enter PassWord' />
+               <input
+  type="password"
+  placeholder="Create password"
+  value={pass}
+  onChange={(e) => setPass(e.target.value)}
+  autoComplete="new-password"
+/>
+
                 <button >Submit</button>
             </form>
         </div>

@@ -14,6 +14,8 @@ import DashBaord from '../Components/DashBaord'
 import SigninGoogle from '../Components/SigninGoogle'
 import { useRoutes } from 'react-router-dom'
 import DashBoardRoute from '../routes/DashBoardRoute'
+import TaskPage from './pages/TaskPage';
+
 
 function App() {
   const routes = useRoutes([
@@ -23,10 +25,14 @@ function App() {
     { path: '/signInGoogle', element: <SigninGoogle /> },
     { path: '/signInGithub', element: <SignInUsingGitHub /> },
     {
-    path: DashBoardRoute.path,
-    element: <PrivateRoute>{DashBoardRoute.element}</PrivateRoute>, // ✅ fixed
-    children: DashBoardRoute.Children 
-  }
+      path: DashBoardRoute.path,
+      element: <PrivateRoute>{DashBoardRoute.element}</PrivateRoute>, // ✅ fixed
+      children: DashBoardRoute.Children
+    },
+
+    // inside routes array
+    { path: '/tasks', element: <PrivateRoute><TaskPage /></PrivateRoute> }
+
   ])
 
 

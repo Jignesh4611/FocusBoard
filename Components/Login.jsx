@@ -5,38 +5,44 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
-    const {signIn} = useAuth();
+    const { signIn } = useAuth();
 
     const [user, setuser] = useState("")
     const [pass, setPass] = useState("")
-      const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
-    const handleSubmit =async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        await signIn(user,pass);
-                navigate("/dashboard"); 
+        await signIn(user, pass);
+        navigate("/dashboard");
 
-        console.log("sign in complete"); 
+        console.log("sign in complete");
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <input
-                    type='text'
+                    type="email"
+                    name="email"
+                    autoComplete="username"
+                    placeholder="Email"
                     value={user}
                     onChange={(e) => setuser(e.target.value)}
-                    placeholder='userName'
                 />
+
                 <input
-                    type='password'
+                    type="password"
+                    name="password"
+                    autoComplete="current-password"
+                    placeholder="Password"
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
-                    placeholder='password'
                 />
-                <button>sign-in</button>
 
+                <button type="submit">Login</button>
             </form>
+
         </div>
     )
 }
