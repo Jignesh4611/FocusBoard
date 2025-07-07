@@ -1,22 +1,20 @@
-import React from 'react'
-import { Link,Outlet } from 'react-router-dom'
-
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 const DashBoardLayout = () => {
   return (
-    <>
-    <div>
-    <h3>DashBoard</h3>
+    <div style={{ padding: '20px' }}>
+      <h3>Dashboard</h3>
+      <nav>
+         <Link to="/dashboard">Main</Link> |{" "}
+        <Link to="/dashboard/dashhome">Home</Link> |{" "}
+        <Link to="/dashboard/profile">Profile</Link> |{" "}
+        <Link to="/dashboard/setting">Setting</Link>
+      </nav>
+      <hr />
+      <Outlet />
     </div>
-    <nav>
-        <Link to="/dashboard" >Home</Link> |{" "}
-        <Link to="/dashboard/profile" >Profile</Link> |{" "}
-        <Link to="/dashboard/Setting" >Setting</Link>
-    </nav>
-    <hr/>
-    <Outlet/>
-    </>
-  )
-}
+  );
+};
 
-export default DashBoardLayout
+export default DashBoardLayout;

@@ -22,7 +22,6 @@ const NavBar = () => {
                 <Link to='/' >Auth-system</Link>
             </div>
             <div>
-                <Link to='/'>Home</Link>
                 {user ? (
                     <>
                         <Link to="/dashboard">Dashboard</Link>
@@ -32,6 +31,7 @@ const NavBar = () => {
                     </>
                 ) : (
                     <>
+                    <Link to='/'>Home</Link>
                         <Link to="/login">Login</Link>
                         <Link to="/signup">Signup</Link>
                         <Link to='/signInGoogle'>SignUsingGoogle</Link>

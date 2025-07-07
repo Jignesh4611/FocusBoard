@@ -4,7 +4,7 @@ import { useAuth } from '../src/AuthContext/AuthContext';
 
 const SignUp = () => {
     const { addUser } = useAuth();
-    
+
     const [text, setText] = useState("");
     const [pass, setPass] = useState("")
     async function handleSubmit(e) {
@@ -23,13 +23,13 @@ const SignUp = () => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder='UserName' />
-               <input
-  type="password"
-  placeholder="Create password"
-  value={pass}
-  onChange={(e) => setPass(e.target.value)}
-  autoComplete="new-password"
-/>
+                <input
+                    type="password"
+                    placeholder="Create password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                    autoComplete="new-password"
+                />
 
                 <button >Submit</button>
             </form>
