@@ -1,0 +1,11 @@
+.react-calendar-heatmap text {
+  font-size: 7px;
+}
+
+.react-calendar-heatmap .color-github {
+  fill: #30a14e; /* GitHub green */
+}
+
+.react-calendar-heatmap .color-empty {
+  fill: #ebedf0; /* light gray for no activity */
+}
