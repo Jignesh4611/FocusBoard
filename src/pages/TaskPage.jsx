@@ -7,18 +7,19 @@ import {
   getTasksByDate
 } from '../../services/taskservice';
 import { markTaskComplete } from '../utils/markTaskComplete ';
+import { updateDailyTaskStats } from '../utils/updateDailyTaskStats';
 
 const TaskPage = () => {
   const { user } = useAuth();
-  const today = dayjs().format('YYYY-MM-DD');
-
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
+  const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'));
+  const isToday = dayjs().isSame(selectedDate, 'day');
 
   useEffect(() => {
-    if (!user) return;
-    getTasksByDate(user.uid, today).then(setTasks);
-  }, [user, today]);
+    if (!user || !selectedDate) return;
+    getTasksByDate(user.uid, selectedDate).then(setTasks);
+  }, [user, selectedDate]);
 
   const handleAddTask = async () => {
     if (!taskInput.trim()) return;
@@ -27,7 +28,7 @@ const TaskPage = () => {
       { task: taskInput.trim(), completed: false, createdAt: new Date() }
     ];
     setTasks(updated);
-    await saveTasksByDate(user.uid, today, updated);
+    await saveTasksByDate(user.uid, selectedDate, updated);
     setTaskInput('');
   };
 
@@ -38,24 +39,40 @@ const TaskPage = () => {
       i === idx ? { ...t, completed: !t.completed } : t
     );
     setTasks(updated);
-    await saveTasksByDate(user.uid, today, updated);
+    await saveTasksByDate(user.uid, selectedDate, updated);
 
     if (justCompleted) {
-      await markTaskComplete(user.uid, today);
+      await markTaskComplete(user.uid, selectedDate);
     }
+
+    await updateDailyTaskStats(user.uid, selectedDate, updated);
   };
 
   const handleDelete = async (idx) => {
     const updated = tasks.filter((_, i) => i !== idx);
     setTasks(updated);
-    await saveTasksByDate(user.uid, today, updated);
+    await saveTasksByDate(user.uid, selectedDate, updated);
+    await updateDailyTaskStats(user.uid, selectedDate, updated);
   };
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
       <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>
-        📝 Tasks for {today}
+        📝 Tasks for {selectedDate}
       </h2>
+
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+        style={{
+          padding: '10px',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          marginBottom: '20px',
+          width: '100%'
+        }}
+      />
 
       <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
         <input
@@ -63,6 +80,7 @@ const TaskPage = () => {
           placeholder="Add new task…"
           value={taskInput}
           onChange={(e) => setTaskInput(e.target.value)}
+          disabled={!isToday}
           style={{
             flexGrow: 1,
             padding: '10px',
@@ -72,13 +90,14 @@ const TaskPage = () => {
         />
         <button
           onClick={handleAddTask}
+          disabled={!isToday}
           style={{
             padding: '10px 16px',
-            backgroundColor: '#007bff',
+            backgroundColor: isToday ? '#007bff' : '#ccc',
             color: '#fff',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: isToday ? 'pointer' : 'not-allowed'
           }}
         >
           Add
@@ -104,6 +123,7 @@ const TaskPage = () => {
                 type="checkbox"
                 checked={t.completed}
                 onChange={() => handleToggle(idx)}
+                disabled={!isToday}
               />
               <span style={{
                 textDecoration: t.completed ? 'line-through' : 'none',
@@ -114,11 +134,12 @@ const TaskPage = () => {
             </label>
             <button
               onClick={() => handleDelete(idx)}
+              disabled={!isToday}
               style={{
                 border: 'none',
                 background: 'transparent',
                 color: '#d00',
-                cursor: 'pointer',
+                cursor: isToday ? 'pointer' : 'not-allowed',
                 fontSize: '16px'
               }}
             >
@@ -127,6 +148,22 @@ const TaskPage = () => {
           </li>
         ))}
       </ul>
+
+      <button
+        onClick={() => updateDailyTaskStats(user.uid, selectedDate, tasks)}
+        disabled={!isToday}
+        style={{
+          marginTop: '16px',
+          padding: '10px 16px',
+          backgroundColor: isToday ? '#28a745' : '#ccc',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: isToday ? 'pointer' : 'not-allowed'
+        }}
+      >
+        ✅ Finish Day & Save Progress
+      </button>
     </div>
   );
 };
