@@ -16,8 +16,11 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    document.body.style.backgroundColor = darkMode ? "#000000" : "#ffffff";
-    document.body.style.color = darkMode ? "#ffffff" : "#000000";
+    if (darkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
   }, [darkMode]);
 
   const routes = useRoutes([
@@ -36,28 +39,18 @@ function App() {
 
   return (
     <UserProvider>
-      <NavBar />
+      <div className="app-container">
+        <NavBar />
 
-      {/* Theme Toggle Button */}
-      <button
-        onClick={() => setDarkMode(prev => !prev)}
-        style={{
-          position: "fixed",
-          top: 10,
-          right: 10,
-          padding: "8px 12px",
-          backgroundColor: darkMode ? "#333" : "#ddd",
-          color: darkMode ? "#fff" : "#000",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          zIndex: 1000
-        }}
-      >
-        {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
-      </button>
+        <button
+          className="theme-toggle-button"
+          onClick={() => setDarkMode(prev => !prev)}
+        >
+          {darkMode ? "☀ Light Mode" : "🌙 Dark Mode"}
+        </button>
 
-      {routes}
+        {routes}
+      </div>
     </UserProvider>
   );
 }

@@ -1,48 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../src/AuthContext/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../src/AuthContext/AuthContext';
+import '../src/App.css';
+
 
 const NavBar = () => {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
-    const hadleLogout = async () => {
-        try {
-            await logout();
-            console.log("Logged out successfully");
-            navigate("/dashboard");
-        } catch (err) {
-            console.error("Logout error:", err.message);
-        }
-    };
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-    return (
-        <>
-            <div>
-                <Link to='/' >Auth-system</Link>
-            </div>
-            <div>
-                {user ? (
-                    <>
-                        <Link to="/dashboard">Dashboard</Link>
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("Logged out successfully");
+      navigate('/');
+    } catch (err) {
+      console.error("Logout error:", err.message);
+    }
+  };
 
-                        <Link to="/tasks">Go to Tasks</Link>
+  return (
+    <nav className="navbar">
+      <div className="nav-brand">
+        <Link to="/">Auth-system</Link>
+      </div>
 
-                    </>
-                ) : (
-                    <>
-                    <Link to='/'>Home</Link>
-                        <Link to="/login">Login</Link>
-                        <Link to="/signup">Signup</Link>
-                        <Link to='/signInGoogle'>SignUsingGoogle</Link>
-                        <Link to='/signInGithub'>SignUsingGitHub</Link>
+      <div className="nav-links">
+        {user ? (
+          <>
+            <Link className="nav-button" to="/dashboard">Dashboard</Link>
+            <Link className="nav-button" to="/tasks">Go to Tasks</Link>
+            <button className="nav-button logout" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link className="nav-button" to="/">Home</Link>
+            <Link className="nav-button" to="/login">Login</Link>
+            <Link className="nav-button" to="/signup">Signup</Link>
+            <Link className="nav-button" to="/signInGoogle">SignUsingGoogle</Link>
+            <Link className="nav-button" to="/signInGithub">SignUsingGitHub</Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
+};
 
-                    </>
-                )}
-
-            </div>
-        </>
-    )
-}
-
-export default NavBar
+export default NavBar;
