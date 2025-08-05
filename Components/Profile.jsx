@@ -14,7 +14,6 @@ const getMonthDates = (monthOffset = 0) => {
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   return { start, end };
 };
-
 const Profile = () => {
   const { user } = useAuth();
   const [taskStats, setTaskStats] = useState([]);
@@ -23,7 +22,7 @@ useEffect(() => {
   const fetchTaskData = async () => {
     if (!user) return;
 
-    const userRef = doc(db, 'users', user.uid); // make sure it's 'users' not 'userTasks'
+    const userRef = doc(db, 'users', user.uid); 
     const snap = await getDoc(userRef);
 
     if (snap.exists()) {
@@ -31,7 +30,7 @@ useEffect(() => {
 
      const transformed = (data.taskCompletionHistory || []).map(entry => ({
   date: entry.date,
-  count: entry.completed, // used for coloring
+  count: entry.completed,
   completed: entry.completed,
   total: entry.total
 }));
