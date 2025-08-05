@@ -5,7 +5,7 @@ import { db } from '../src/firebase';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { format } from 'date-fns';
-import '/Profile.css'; // Import new CSS
+import './Profile.css'; // Import new CSS
 
 // Helper: Get start and end of a given month
 const getMonthDates = (monthOffset = 0) => {
