@@ -5,7 +5,7 @@ import { db } from '../src/firebase';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { format } from 'date-fns';
-import '../src/App.css';
+import '/Profile.css'; // Import new CSS
 
 // Helper: Get start and end of a given month
 const getMonthDates = (monthOffset = 0) => {
@@ -63,27 +63,20 @@ const Profile = () => {
   });
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ fontWeight: 'bold', marginBottom: '10px' }}>
+    <div className="profile-container">
+      <h2 className="profile-title">
         👤 {user?.email}'s Task Completion Streak
       </h2>
 
       {/* Month Selector */}
-      <div style={{ margin: '12px 0', display: 'flex', gap: '10px' }}>
+      <div className="month-selector">
         {[0, 1, 2, 3].map((offset) => {
           const label = format(getMonthDates(offset).start, 'MMMM yyyy');
           return (
             <button
               key={offset}
               onClick={() => setSelectedMonth(offset)}
-              style={{
-                padding: '6px 12px',
-                borderRadius: '6px',
-                backgroundColor: selectedMonth === offset ? '#2563eb' : '#e5e7eb',
-                color: selectedMonth === offset ? '#fff' : '#000',
-                border: 'none',
-                cursor: 'pointer'
-              }}
+              className={`month-button ${selectedMonth === offset ? 'active' : ''}`}
             >
               {label}
             </button>
@@ -92,13 +85,7 @@ const Profile = () => {
       </div>
 
       {/* Heatmap */}
-      <div
-        style={{
-          transform: 'scale(0.9)',  // Larger for visibility
-          transformOrigin: 'top left',
-          marginTop: '20px'
-        }}
-      >
+      <div className="heatmap-wrapper">
         <CalendarHeatmap
           startDate={start}
           endDate={end}
