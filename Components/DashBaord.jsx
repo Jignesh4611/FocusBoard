@@ -9,10 +9,10 @@ const Dashboard = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    async function handleLogOut() {
-        await signOut(auth);
-        navigate('/login');
-    }
+    // async function handleLogOut() {
+    //     await signOut(auth);
+    //     navigate('/login');
+    // }
 
     if (!user) {
         return <p className="loading-message">Loading user info...</p>;
@@ -22,9 +22,9 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <h1 className="dashboard-title">Welcome to the Dashboard</h1>
             <p className="user-email">Logged in as: {user.email}</p>
-            <button className="logout-button" onClick={handleLogOut}>
+            {/* <button className="logout-button" onClick={handleLogOut}>
                 Logout
-            </button>
+            </button> */}
         </div>
     );
 }
