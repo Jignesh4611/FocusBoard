@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../src/AuthContext/AuthContext';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../src/firebase';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { format } from 'date-fns';
-import '../src/App.css'
+import '../src/App.css';
 
+// Helper: Get start and end of a given month
 const getMonthDates = (monthOffset = 0) => {
   const now = new Date();
   now.setMonth(now.getMonth() - monthOffset);
@@ -14,35 +15,48 @@ const getMonthDates = (monthOffset = 0) => {
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   return { start, end };
 };
+
 const Profile = () => {
   const { user } = useAuth();
   const [taskStats, setTaskStats] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(0);
-useEffect(() => {
-  const fetchTaskData = async () => {
+
+  useEffect(() => {
     if (!user) return;
 
-    const userRef = doc(db, 'users', user.uid); 
-    const snap = await getDoc(userRef);
+    const userRef = doc(db, 'users', user.uid);
 
-    if (snap.exists()) {
-      const data = snap.data();
+    // Real-time Firestore listener
+    const unsubscribe = onSnapshot(userRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
 
-     const transformed = (data.taskCompletionHistory || []).map(entry => ({
-  date: entry.date,
-  count: entry.completed,
-  completed: entry.completed,
-  total: entry.total
-}));
+        const transformed = (data.taskCompletionHistory || []).map(entry => {
+          let dateValue;
 
-      setTaskStats(transformed);
-    }
-  };
+          // Convert Firestore Timestamp or string to Date
+          if (entry.date?.toDate) {
+            dateValue = entry.date.toDate();
+          } else {
+            dateValue = new Date(entry.date);
+          }
 
-  fetchTaskData();
-}, [user]);
+          return {
+            date: format(dateValue, 'yyyy-MM-dd'), // store as string for heatmap
+            count: entry.completed || 0
+          };
+        });
+
+        setTaskStats(transformed);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
   const { start, end } = getMonthDates(selectedMonth);
 
+  // Filter for selected month
   const filtered = taskStats.filter(entry => {
     const date = new Date(entry.date);
     return date >= start && date <= end;
@@ -50,7 +64,7 @@ useEffect(() => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontWeight: 'bold' }}>
+      <h2 style={{ fontWeight: 'bold', marginBottom: '10px' }}>
         👤 {user?.email}'s Task Completion Streak
       </h2>
 
@@ -77,11 +91,11 @@ useEffect(() => {
         })}
       </div>
 
+      {/* Heatmap */}
       <div
         style={{
-          transform: 'scale(0.2)',       // Shrinks the chart size
-          transformOrigin: 'top left',   // Aligns scaling to top-left corner
-          overflowX: 'auto',             // Allows scrolling if needed
+          transform: 'scale(0.9)',  // Larger for visibility
+          transformOrigin: 'top left',
           marginTop: '20px'
         }}
       >
@@ -102,7 +116,6 @@ useEffect(() => {
           showWeekdayLabels={true}
         />
       </div>
-
     </div>
   );
 };
